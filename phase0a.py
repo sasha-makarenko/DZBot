@@ -15,8 +15,10 @@ model = Qwen3VLForConditionalGeneration.from_pretrained(
     device_map="auto",     
 )
 
-processor = AutoProcessor.from_pretrained(MODEL_ID) # тут в processor мы записываем - вызываем AutoProcessor он автоматически загружает нужный инструмент для обработки данных (я это прочитал в интернете не знаю точно то это значит)
-# и в AutoProcessor вызываем функцию from_pretrained то есть уже существующую модель в нее передаем переменную MODEL_ID  ВАЖНО точно что значит from_pretrained я не знаю 
+processor = AutoProcessor.from_pretrained(MODEL_ID) # тут в processor мы записываем - вызываем AutoProcessor 
+# он автоматически загружает нужный инструмент для обработки данных
+# и в AutoProcessor вызываем метод from_pretrained то есть уже существующую модель 
+# в нее передаем переменную MODEL_ID  ВАЖНО точно что значит from_pretrained я не знаю 
 print("Модель загружена.")
 
 # 2. Открываем слайд
@@ -46,7 +48,7 @@ inputs = processor.apply_chat_template(
 
 # 5. Генерируем ответ
 print("Думаю над слайдом...")
-generated_ids = model.generate(**inputs, max_new_tokens=512) # generated_ids в него передаем наши model и generate с переменными inputs, не знаю что значит **, max_new_tokens=512 задаем кол во токенов 
+generated_ids = model.generate(**inputs, max_new_tokens=512)
 
 # 6. Отрезаем токены самого запроса — оставляем только новый ответ модели
 trimmed = [out[len(inp):] for inp, out in zip(inputs["input_ids"], generated_ids)]
