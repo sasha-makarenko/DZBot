@@ -58,20 +58,19 @@ def make_note(image_path):
     trimmed = [out[len(inp):] for inp, out in zip(inputs["input_ids"], generated_ids)]
     return processor.batch_decode(trimmed, skip_special_tokens=True)[0]
 
-
 # --- Папки: вход slides/, выход notes/ ---
-slides_dir = Path("slides")
+slides_dir = Path("slides") 
 notes_dir = Path("notes")
 notes_dir.mkdir(exist_ok=True)   # создать notes/, если её нет
 
-slides = sorted(slides_dir.glob("*.png"))   # все png по порядку
+slides = sorted(slides_dir.glob("*.png"))   # тут мы сортируем slides по порядку?
 print(f"Нашёл слайдов: {len(slides)}")
 
-for slide_path in slides:
+for slide_path in slides:   # берем слайды по очереди 
     print(f"Обрабатываю {slide_path.name} ...")
-    note = make_note(slide_path)
-    out_path = notes_dir / f"{slide_path.stem}.md"
-    out_path.write_text(f"# Конспект: {slide_path.stem}\n\n{note}", encoding="utf-8")
+    note = make_note(slide_path) # вызываем функцию make_note и передаем в нее слайд 
+    out_path = notes_dir / f"{slide_path.stem}.md" # out_path берем имя слайда с приставкой .md. как я понимаю мы создаем слайд в папке notes
+    out_path.write_text(f"# Конспект: {slide_path.stem}\n\n{note}", encoding="utf-8") # пишем текст из note в текущий слайд который создали в out_path
     print(f"  -> сохранил {out_path}")
 
 print("Готово. Все конспекты в папке notes/")
